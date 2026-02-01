@@ -28,6 +28,8 @@
 
       <!-- Main Section -->
       <div class="main">
+
+        <!-- Header Section -->
         <div class="main-header">
           <div>
             <h2>Hello User</h2>
@@ -38,41 +40,43 @@
           </div>
         </div>
 
-        <!-- Progress Section -->
-        <div class="chart-section">
-          <h2>Great Progress Today!</h2>
-          <p> You are on track to meet your goals. Keep pushing forward!</p>
-          <div class="progress-bar">
-            <h3>Daily Goal Progress
-              <per>75%</per>
-            </h3>
+        <div class="scrollCenter">
+          <!-- Progress Section -->
+          <div class="chart-section">
+            <h2>Great Progress Today!</h2>
+            <p> You are on track to meet your goals. Keep pushing forward!</p>
+            <div class="progress-bar">
+              <h3>Daily Goal Progress
+                <per>75%</per>
+              </h3>
 
-            <div class="bar-bg">
-              <div class="bar-fill"></div>
+              <div class="bar-bg">
+                <div class="bar-fill"></div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Bottom Cards -->
-        <div class="cards">
-          <div class="card">
-            <h4>Steps Count</h4>
-            <p>5,095</p>
-          </div>
+          <!-- Bottom Cards -->
+          <div class="cards">
+            <div class="card">
+              <h4>Steps Count</h4>
+              <p>5,095</p>
+            </div>
 
-          <div class="card">
-            <h4>Calories Burned</h4>
-            <p>350</p>
-          </div>
+            <div class="card">
+              <h4>Calories Burned</h4>
+              <p>350</p>
+            </div>
 
-          <div class="card">
-            <h4>Body Temperature</h4>
-            <p>98.6 F</p>
-          </div>
+            <div class="card">
+              <h4>Body Temperature</h4>
+              <p>98.6 F</p>
+            </div>
 
-          <div class="card">
-            <h4>Heart Rate</h4>
-            <p>65 bpm</p>
+            <div class="card">
+              <h4>Heart Rate</h4>
+              <p>65 bpm</p>
+            </div>
           </div>
         </div>
       </div>
@@ -87,6 +91,7 @@
         <i class="fa-solid fa-plus add-icon" onclick="openGoalPopup()"></i>
       </div>
 
+      
       <!-- Goals List -->
       <ul id="goal-box" class="goal-box"></ul>
 
@@ -103,13 +108,15 @@
             <select id="goalName" class="goal-select">
               <option value="" disabled selected>Select goal name</option>
               <option value="waterIntake">Water Intake</option>
-              <option value="Workout">Workout</option>
+              <!-- <option value="caloriesBurned">Calories Burned</option>
+              <option value="caloriesConsumed">Calories Consumed</option> -->
+              <option value="workout">Workout</option>
               <option value="stepsCount">Steps Count</option>
               <option value="Sleep Schedule">Sleep Schedule</option>
             </select>
 
             <label for="goalDesc">Description / Target</label>
-            <input id="goalDesc" type="text" placeholder="e.g. 8 Hours">
+            <input id="goalDesc" type="text" placeholder="e.g. 10K steps, 2L water, etc.">
           </div>
 
           <button class="primary-btn" onclick="addGoal()">Add Goal</button>

@@ -39,13 +39,15 @@ const defaultCardTypes = ["stepsCount", "calories", "temperature", "heartRate"];
 
 // Goal → Label + Unit + Value Logic
 const goalConfig = {
-  stepsCount: { label: "Steps Count", unit: "steps", value: () => healthData.steps },
+  stepsCount: { label: "Steps Count", unit: "K steps", value: () => healthData.steps },
   calories: { label: "Calories Burned", unit: "kcal", value: () => healthData.calories },
   temperature: { label: "Body Temperature", unit: "°F", value: () => healthData.temperature },
   heartRate: { label: "Heart Rate", unit: "bpm", value: () => healthData.heartRate },
   waterIntake: { label: "Water Intake", unit: "L", value: () => 0 },
-  Workout: { label: "Workout", unit: "min", value: () => 0 },
-  "Sleep Schedule": { label: "Sleep Schedule", unit: "hrs", value: () => 0 }
+  caloriesConsumed: { label: "Calories Consumed", unit: "kcal", value: () => 0 },
+  workout: { label: "Workout", unit: "min", value: () => 0 },
+  sleepSchedule: { label: "Sleep Schedule", unit: "hrs", value: () => 0 },
+  caloriesConsumed: { label: "Calories Consumed", unit: "kcal", value: () => 0 }
 };
 
 

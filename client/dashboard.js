@@ -1,4 +1,9 @@
-const username = localStorage.getItem("username");
+/********************************
+  1️⃣ USER SESSION
+*********************************/
+
+const loggedInUser = localStorage.getItem("loggedInUser");
+const username = localStorage.getItem(`username_${loggedInUser}`);
 
 const headerText = document.querySelector(".main-header h2");
 
@@ -9,13 +14,12 @@ if (username) {
 }
 
 
-
 /********************************
-  1️⃣ DUMMY HEALTH DATA (STATIC)
+  2️⃣ DUMMY HEALTH DATA (STATIC)
 *********************************/
 
 const healthData = {
-  steps: 5095,
+  steps: 7095,
   calories: 350,
   temperature: 98.6,
   heartRate: 65
@@ -24,42 +28,78 @@ const healthData = {
 // Show default card data
 document.querySelector(".card:nth-child(1) p").innerText = healthData.steps;
 document.querySelector(".card:nth-child(2) p").innerText = healthData.calories;
-document.querySelector(".card:nth-child(3) p").innerText = healthData.temperature + " F";
-document.querySelector(".card:nth-child(4) p").innerText = healthData.heartRate + " bpm";
+document.querySelector(".card:nth-child(3) p").innerText =
+  healthData.temperature + " °F";
+document.querySelector(".card:nth-child(4) p").innerText =
+  healthData.heartRate + " bpm";
 
 
 /********************************
-  2️⃣ GOAL → UNIT & CARD MAPPING
+  3️⃣ GOAL → UNIT & CARD MAPPING
 *********************************/
 
 const cardsContainer = document.querySelector(".cards");
 
-// Default card types (already in HTML)
-const defaultCardTypes = ["stepsCount", "calories", "temperature", "heartRate"];
+const defaultCardTypes = [
+  "stepsCount",
+  "calories",
+  "temperature",
+  "heartRate"
+];
 
-// Goal → Label + Unit + Value Logic
 const goalConfig = {
-  stepsCount: { label: "Steps Count", unit: "K steps", value: () => healthData.steps },
-  calories: { label: "Calories Burned", unit: "kcal", value: () => healthData.calories },
-  temperature: { label: "Body Temperature", unit: "°F", value: () => healthData.temperature },
-  heartRate: { label: "Heart Rate", unit: "bpm", value: () => healthData.heartRate },
-  waterIntake: { label: "Water Intake", unit: "L", value: () => 0 },
-  caloriesConsumed: { label: "Calories Consumed", unit: "kcal", value: () => 0 },
-  workout: { label: "Workout", unit: "min", value: () => 0 },
-  sleepSchedule: { label: "Sleep Schedule", unit: "hrs", value: () => 0 },
-  caloriesConsumed: { label: "Calories Consumed", unit: "kcal", value: () => 0 }
+  stepsCount: {
+    label: "Steps Count",
+    unit: "K steps",
+    value: () => healthData.steps
+  },
+  calories: {
+    label: "Calories Burned",
+    unit: "kcal",
+    value: () => healthData.calories
+  },
+  temperature: {
+    label: "Body Temperature",
+    unit: "°F",
+    value: () => healthData.temperature
+  },
+  heartRate: {
+    label: "Heart Rate",
+    unit: "bpm",
+    value: () => healthData.heartRate
+  },
+  waterIntake: {
+    label: "Water Intake",
+    unit: "L",
+    value: () => 0
+  },
+  caloriesConsumed: {
+    label: "Calories Consumed",
+    unit: "kcal",
+    value: () => 0
+  },
+  workout: {
+    label: "Workout",
+    unit: "min",
+    value: () => 0
+  },
+  sleepSchedule: {
+    label: "Sleep Schedule",
+    unit: "hrs",
+    value: () => 0
+  }
 };
 
 
 /********************************
-  3️⃣ GOALS SYSTEM
+  4️⃣ GOALS SYSTEM
 *********************************/
 
 const goalNameSelect = document.getElementById("goalName");
-const goalDescInput  = document.getElementById("goalDesc");
-const goalBox        = document.getElementById("goal-box");
+const goalDescInput = document.getElementById("goalDesc");
+const goalBox = document.getElementById("goal-box");
 
-const addPopup    = document.getElementById("goalPopup");
+const addPopup = document.getElementById("goalPopup");
 const deletePopup = document.getElementById("deletePopup");
 
 let goals = [];
@@ -127,7 +167,6 @@ function addGoal() {
   renderDynamicCards();
   updateProgress();
 
-  // Reset fields
   goalNameSelect.selectedIndex = 0;
   goalDescInput.value = "";
   closeGoalPopup();
@@ -170,7 +209,8 @@ function renderGoals() {
       <i class="fa-solid fa-trash delete-icon"></i>
     `;
 
-    li.querySelector(".delete-icon").onclick = () => openDeletePopup(index);
+    li.querySelector(".delete-icon").onclick =
+      () => openDeletePopup(index);
 
     goalBox.appendChild(li);
   });
@@ -178,16 +218,19 @@ function renderGoals() {
 
 
 /********************************
-  4️⃣ DYNAMIC CARDS LOGIC
+  5️⃣ DYNAMIC CARDS LOGIC
 *********************************/
 
 function renderDynamicCards() {
-  // Remove old dynamic cards
-  document.querySelectorAll(".dynamic-card").forEach(card => card.remove());
+
+  document
+    .querySelectorAll(".dynamic-card")
+    .forEach(card => card.remove());
 
   goals.forEach(goal => {
-    // Create card only if not default card
+
     if (!defaultCardTypes.includes(goal.type)) {
+
       const config = goalConfig[goal.type];
 
       const card = document.createElement("div");
@@ -205,16 +248,25 @@ function renderDynamicCards() {
 
 
 /********************************
-  5️⃣ STORAGE (LOCAL STORAGE)
+  6️⃣ STORAGE (USER WISE)
 *********************************/
 
 function saveGoals() {
-  localStorage.setItem("goalsJSON", JSON.stringify(goals));
+  if (!loggedInUser) return;
+  localStorage.setItem(
+    `goals_${loggedInUser}`,
+    JSON.stringify(goals)
+  );
 }
 
 function loadGoals() {
-  const saved = localStorage.getItem("goalsJSON");
+
+  if (!loggedInUser) return;
+
+  const saved = localStorage.getItem(`goals_${loggedInUser}`);
+
   goals = saved ? JSON.parse(saved) : [];
+
   renderGoals();
   renderDynamicCards();
   updateProgress();
@@ -224,23 +276,28 @@ loadGoals();
 
 
 /********************************
-  6️⃣ PROGRESS BAR LOGIC
+  7️⃣ PROGRESS BAR LOGIC
 *********************************/
 
 function updateProgress() {
+
   let progress = 0;
 
-  // Only calculate progress using steps goal (simple logic)
   const stepsGoal = goals.find(g => g.type === "stepsCount");
 
-  if (stepsGoal && stepsGoal.target > 0) {
-    progress = (healthData.steps / stepsGoal.target) * 100;
-  }
+ if (stepsGoal && stepsGoal.target > 0) {
+
+  // Convert K steps → steps
+  const targetSteps = stepsGoal.target * 1000;
+
+  progress = (healthData.steps / targetSteps) * 100;
+}
+
 
   progress = Math.min(Math.round(progress), 100);
 
   const barFill = document.querySelector(".bar-fill");
-  const percentText = document.querySelector(".progress-bar per");
+  const percentText = document.querySelector(".progress-percent");
 
   barFill.style.width = progress + "%";
   percentText.innerText = progress + "%";

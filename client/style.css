@@ -6,11 +6,11 @@
 }
 
 body {
-           background: #dee3f1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+    background: #dee3f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
            
         }
 
@@ -24,7 +24,7 @@ body {
             align-items: center;
             background-color: #fff;
             border-radius: 15px;
-            box-shadow: 0px 9px 650px rgb(65, 63, 186);
+            /* box-shadow: 0px 9px 650px rgb(65, 63, 186); */
             overflow: hidden;
 }
 
@@ -36,6 +36,7 @@ body {
     background-image: url(images/loginImage.jpg);
     background-position:center;
     background-size: cover;
+    border-right: #46465879 2px solid;
 }
 
 .left h2{
@@ -66,14 +67,14 @@ body {
 
 
 .right h2{
-     margin-bottom: 1.5rem;
+     margin-bottom: 2.5rem;
             font-size: 26px;
             font-weight: 600;
             color: #3f42fa;
 }
 
 
-
+/* 
         .btn-social {
             display: flex;
             gap: 10px;
@@ -101,23 +102,22 @@ body {
             margin: 10px 0;
             color: #7f7e7e;
             font-weight: 600;
-        }
+        } */
 
         input {
             width: 100%;
             padding: 7px 15px;
             color: #013ee7;
-            font-weight: 450;
-            margin-bottom:10px ;
+            margin-bottom:12px ;
             border-radius: 10px;
             border: none;
             font-size: 14px;
             background-color: white;
-             box-shadow: 0px 3px 5px rgb(108, 122, 179);
+             box-shadow: 0px 3px 2px rgb(108, 122, 179);
              outline: none;
         }
         input::placeholder{
-            color: rgb(161, 161, 161);
+            color: rgb(70, 71, 92);
             font-weight: 400;
         }
 
@@ -149,7 +149,7 @@ body {
             border-radius: 15px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 15px;
+            margin-top: 18px;
         }
 
         .create-btn:hover {

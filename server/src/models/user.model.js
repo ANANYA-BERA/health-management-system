@@ -19,6 +19,9 @@ const userSchema = new Schema({
     avatar: {
         type: String
     },
+    avatarPublicId: {
+        type: String
+    },
     age: {
         type: Number
     },

@@ -2,7 +2,9 @@ const asyncHandler = require("../utils/asyncHandler.js");
 const apiError = require("../utils/apiError.js");
 const apiResponse = require("../utils/apiResponse.js");
 const User = require("../models/user.model.js");
+const cloudinary = require("cloudinary").v2;
 const jwt = require("jsonwebtoken");
+const uploadImageToCloudinary = require("../config/cloudinary.js");
 
 const tokenAccess = async (checkUserId) => {
   const useridFound = await User.findById(checkUserId);
@@ -177,12 +179,60 @@ const changePassword = asyncHandler(async(req, res) => {
   );
 });
 
+const editProfile = asyncHandler(async(req, res) => {
+  const { age, height, weight, goal } = req.body;
+
+  const user = await User.findById(req.user._id);
+  if(!user){
+    throw new apiError(404, "You have to login first..");
+  }
+
+  const avatarFilePath = req.file?.path;
+  if(!avatarFilePath){
+    throw new apiError(400, "Avatar file path is required..");
+  }
+
+  if(user.avatarPublicId){
+    try {
+      await cloudinary.uploader.destroy(user.avatarPublicId, {
+        resource_type: "image"
+      });
+    } catch (error) {
+      throw new apiError(400, "Failed to change the avatar..", error.message);
+    }
+  }
+
+  const avatar = await uploadImageToCloudinary(avatarFilePath);
+  if(!avatar){
+    throw new apiError(400, "Avatar not found..");
+  }
+
+  const updatedFields = {};
+  if(age) updatedFields.age = age;
+  if(height) updatedFields.height = height;
+  if(weight) updatedFields.weight = weight;
+  if(goal) updatedFields.goal = goal;
+  if(avatar.secure_url) updatedFields.avatar = avatar.secure_url;
+  if(avatar.public_id) updatedFields.avatarPublicId = avatar.public_id;
+
+  const updatedProfile = await User.findByIdAndUpdate(
+    req.user._id,
+    { $set: updatedFields },
+    { new: true }
+  );
+
+  return res.status(200).json(
+    new apiResponse(200, updatedProfile, "Profile updated successfully..")
+  )
+});
+
 module.exports = {
   registerUser,
   loggedInUser,
   logOutUser,
   refreshAccessToken,
   changePassword,
+  editProfile
 };
 
 

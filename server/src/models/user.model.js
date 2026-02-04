@@ -16,6 +16,21 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    avatar: {
+        type: String
+    },
+    age: {
+        type: Number
+    },
+    height: {
+        type: Number // in cm
+    },
+    weight: {
+        type: Number // in Kg
+    },
+    goal: {
+        type: String
+    },
     refreshToken:{
         type: String,
     }

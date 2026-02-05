@@ -23,7 +23,8 @@ body {
     align-items: center;
     justify-content: space-between;
     border-radius: 15px;
-    /* box-shadow: 0px 9px 650px rgb(65, 63, 186); */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
     background-image: url(images/backgroundimage.png);
     background-size: cover;
 }
@@ -33,9 +34,11 @@ body {
     flex-direction: column;
     height: 100%;
     padding: 70px 50px;
-    /* background-color: #dee3f1; */
-    /* background-image: url(images/loginImage.jpg); */
-
+    background-image: url(images/loginImage.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15px 0 0 15px;
 }
 
 .left h2 {
@@ -43,12 +46,14 @@ body {
     font-size: 38px;
     font-weight: 800;
     margin-bottom: 5px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .left p {
-    color: rgb(213, 210, 236);
+    color: rgba(255, 255, 255, 0.95);
     font-size: 18px;
     font-weight: 600;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 .right {
@@ -56,19 +61,25 @@ body {
     flex-direction: column;
     height: 100%;
     width: 47%;
-    padding-right: 40px;
+    padding: 40px 40px 40px 50px;
     text-align: center;
     justify-content: center;
     align-items: center;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 0 15px 15px 0;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.06);
 }
 
-
+#signinBox {
+    width: 100%;
+    max-width: 280px;
+}
 
 .right h2 {
-    margin-bottom: 2.7rem;
-    font-size: 30px;
-    font-weight: 600;
-    color: #fafce2;
+    margin-bottom: 2rem;
+    font-size: 26px;
+    font-weight: 700;
+    color: #2d2a6e;
 }
 
 #signinForm {
@@ -81,42 +92,36 @@ body {
 
 input {
     width: 100%;
-    padding: 7px 12px;
-    color: #ffffff;
+    padding: 10px 14px;
+    color: #1a1a2e;
     margin-bottom: 15px;
     border-radius: 8px;
-    border: none;
+    border: 1.5px solid #c4c8e8;
     font-size: 14px;
-    background-color: transparent !important;
-    outline: 1.7px solid #acb3fe;
+    background-color: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Remove background when focused */
 input:focus {
-    background-color: transparent !important;
-    outline: 1.5px solid #8690fe;
+    border-color: #4b4ded;
+    box-shadow: 0 0 0 3px rgba(75, 77, 237, 0.15);
 }
 
-/* Remove background when valid */
-input:valid {
-    background-color: transparent !important;
-}
-
-/* Placeholder Styling */
 input::placeholder {
-    color: rgb(208, 208, 250);
+    color: #6b6b8a;
     font-weight: 400;
 }
 
-/* ================= AUTOFILL FIX (VERY IMPORTANT) ================= */
+/* ================= AUTOFILL FIX ================= */
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
-    box-shadow: 0 0 0 1000px transparent inset !important;
-    -webkit-text-fill-color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+    box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-text-fill-color: #1a1a2e !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -131,12 +136,17 @@ input:-webkit-autofill:active {
 }
 
 .password-field i {
-    color: #dbd7fc;
+    color: #6b6b8a;
     font-size: 14px;
     position: absolute;
     right: 12px;
-    top: 11px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
+}
+
+.password-field i:hover {
+    color: #4b4ded;
 }
 
 /* Hide default password reveal icons */
@@ -156,20 +166,22 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 /* ================= BUTTON ================= */
 
 .create-btn {
-    padding: 10px 25px;
-    background: #f7f4f4;
-    width: fit-content;
-    color: rgb(22, 26, 147);
+    padding: 12px 28px;
+    background: #4b4ded;
+    width: 100%;
+    color: #fff;
     font-weight: 600;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
+    transition: background 0.2s, transform 0.2s;
 }
 
 .create-btn:hover {
-    transform: scale(1.05);
+    background: #3d3bc7;
+    transform: scale(1.02);
 }
 
 .login-text {

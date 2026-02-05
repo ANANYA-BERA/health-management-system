@@ -91,9 +91,9 @@ async function login() {
     localStorage.setItem("loggedInUser", user.email);
     localStorage.setItem(`username_${user.email}`, user.fullName || user.email);
 
-    // ✅ Store token if backend sends
-    if (data.token) {
-      localStorage.setItem("token", data.token);
+    // ✅ Store token (backend sends it in data.data.accessToken)
+    if (data.data && data.data.accessToken) {
+      localStorage.setItem("token", data.data.accessToken);
     }
 
     alert("Login successful 🎉");

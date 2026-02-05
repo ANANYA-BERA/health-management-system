@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,9 +8,10 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 </head>
+
 <body>
   <div class="Container">
-        
+
     <!-- Left Side -->
     <div class="left">
       <h2>Welcome Back!</h2>
@@ -19,16 +21,17 @@
     <!-- Right Side -->
     <div class="right">
       <form id="signinForm" onsubmit="login(event)">
-        <h2>Login Your Account</h2>
+        <h2>Login<br> Your Account</h2>
 
         <input id="email" type="email" placeholder="Email" required>
 
         <div class="password-field">
-          <input type="password" id="password" placeholder="Password (atleast 6 characters)" required>
-          <i class="fa-solid fa-eye" onclick="togglePassword()"></i>
+          <input type="password" id="password" placeholder="Password" required>
+          <i class="fa fa-eye-slash"></i>
         </div>
 
-        <button type="submit" class="create-btn">Login</button>
+
+        <button type="submit" class="login-btn">Login</button>
       </form>
     </div>
 
@@ -37,4 +40,5 @@
   <script src="api.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>

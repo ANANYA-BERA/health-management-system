@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,34 +9,37 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
 </head>
+
 <body>
-  <div class="Container"> 
-        
-        <!-- Left Side -->
-        <div class="left">
-            <h2>Welcome!</h2>
-            <p>your journey to better health continues here.</p>
-        </div>
-        <!-- Right Side -->
-        <div class="right">
-          <form id="signupForm" onsubmit="signup(event)">
-            <h2>Create Account</h2>
-            
-              <input id="name" type="text" placeholder="Name">
-              <input id="email" type="email" placeholder="Email Address">
+  <div class="Container">
 
-              <div class="password-field">
-                  <input type="password" id="password" placeholder="Password (atleast 6 characters)">
-                  <i class="fa-solid fa-eye" onclick="togglePassword()"></i>
-              </div>
-              <button type="submit" class="create-btn">Create Account</button>
-
-            <p class="login-text">Already have an Account? <a href="login.html">Log in</a></p>
-          </form>
-        </div>
-
+    <!-- Left Side -->
+    <div class="left">
+      <h2>Welcome!</h2>
+      <p>your journey to better health continues here.</p>
     </div>
+    <!-- Right Side -->
+    <div class="right">
+      <form id="signupForm" onsubmit="signup(event)">
+        <h2>Create Account</h2>
+
+        <input id="name" type="text" placeholder="Name">
+        <input id="email" type="email" placeholder="Email Address">
+
+        <div class="password-field">
+          <input type="password" id="password" placeholder="Password" required>
+          <i class="fa fa-eye-slash"></i>
+        </div>
+
+        <button type="submit" class="create-btn">Create Account</button>
+
+        <p class="login-text">Already have an Account? <a href="login.html">Log in</a></p>
+      </form>
+    </div>
+
+  </div>
   <script src="api.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,3 +1,29 @@
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.querySelectorAll(".password-field").forEach(field => {
+
+    const input = field.querySelector("input");
+    const icon = field.querySelector("i");
+
+    icon.addEventListener("click", () => {
+
+      const isPassword = input.type === "password";
+
+      input.type = isPassword ? "text" : "password";
+
+      icon.classList.toggle("fa-eye");
+      icon.classList.toggle("fa-eye-slash");
+    });
+
+  });
+
+});
+
+
+
+
+
+
 // ================= SIGN UP =================
 async function signup(event) {
   event.preventDefault();

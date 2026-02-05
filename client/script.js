@@ -1,3 +1,25 @@
+// ==================================================
+// CONFIG & HELPERS
+// ==================================================
+const BASE_URL = "http://localhost:4000";
+
+function getToken() {
+  return localStorage.getItem("token");
+}
+
+function requireAuth() {
+  if (!getToken()) {
+    window.location.href = "login.html";
+    return false;
+  }
+  return true;
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
 // ================= SIGN UP =================
 async function signup(event) {
   event.preventDefault();
@@ -37,7 +59,7 @@ async function signup(event) {
 // ==================================================
 // LOGIN
 // ==================================================
-function login() {
+async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
@@ -81,13 +103,6 @@ function login() {
     console.error("Login error:", error);
     alert("Server error!");
   }
-}
-
-
-
-// ================= PROFILE REDIRECT =================
-function editProfile() {
-  window.location.href = "editprofile.html";
 }
 
 function goBack() {
@@ -151,10 +166,10 @@ async function loadProfile() {
 
     if (user.height && user.weight) {
       const heightM = user.height * 0.3048;
-      bmi = (user.weight / (heightM * heightM)).toFixed(1);
+      bmiText = (user.weight / (heightM * heightM)).toFixed(1);
     }
 
-    document.querySelectorAll(".stat h3")[2].innerText = bmi;
+    document.querySelectorAll(".stat h3")[2].innerText = bmiText;
     document.querySelectorAll(".stat h3")[3].innerText =
       user.age || "Not Set";
 
@@ -215,28 +230,25 @@ async function loadEditProfile() {
 // ============================
 // SAVE PROFILE DATA
 // ============================
-async function saveProfile() {
+async function saveProfile(event) {
+  event.preventDefault();
 
-  const token = localStorage.getItem("token");
-
-  if (!token) return false;
-
-  try {
-
-  const fullName = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const age = document.getElementById("age").value;
-  const gender = document.getElementById("gender").value;
-  const height = document.getElementById("height").value;
-  const weight = document.getElementById("weight").value;
-  const target = document.getElementById("goal").value;
-  const avatarFile = document.getElementById("upload").files[0];
-
-  const nameParts = fullName.split(/\s+/);
-  const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(" ");
+  if (!requireAuth()) return;
 
   try {
+    const fullName = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const age = document.getElementById("age").value;
+    const gender = document.getElementById("gender").value;
+    const height = document.getElementById("height").value;
+    const weight = document.getElementById("weight").value;
+    const target = document.getElementById("goal").value;
+    const avatarFile = document.getElementById("upload").files[0];
+
+    const nameParts = fullName.split(/\s+/);
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" ");
+
     // Always use FormData (multer expects multipart/form-data)
     const formData = new FormData();
     

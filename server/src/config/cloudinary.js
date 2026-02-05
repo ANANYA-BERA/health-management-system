@@ -1,6 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 const { error } = require("console");
-const { fs } = require("fs");
+const fs = require("fs");
 const apiError = require("../utils/apiError");
 
 cloudinary.config({

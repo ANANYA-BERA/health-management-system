@@ -179,47 +179,88 @@ const changePassword = asyncHandler(async(req, res) => {
   );
 });
 
+const getProfile = asyncHandler(async(req, res) => {
+  const user = await User.findById(req.user._id).select(
+    "-password -refreshToken"
+  );
+  
+  if(!user){
+    throw new apiError(404, "User not found");
+  }
+
+  // Parse fullName into firstName and lastName for client compatibility
+  const nameParts = user.fullName ? user.fullName.split(/\s+/) : [];
+  const firstName = nameParts[0] || "";
+  const lastName = nameParts.slice(1).join(" ") || "";
+
+  // Format user data to match client expectations
+  const userData = {
+    ...user.toObject(),
+    firstName,
+    lastName,
+    target: user.goal, // Map goal to target for client
+    gender: user.gender || null // Add gender field (may not exist in model)
+  };
+
+  return res.status(200).json(
+    new apiResponse(200, { user: userData }, "Profile retrieved successfully")
+  );
+});
+
 const editProfile = asyncHandler(async(req, res) => {
-  const { age, height, weight, goal } = req.body;
+  const { age, height, weight, goal, firstName, lastName, email, gender } = req.body;
 
   const user = await User.findById(req.user._id);
   if(!user){
     throw new apiError(404, "You have to login first..");
   }
 
-  const avatarFilePath = req.file?.path;
-  if(!avatarFilePath){
-    throw new apiError(400, "Avatar file path is required..");
-  }
-
-  if(user.avatarPublicId){
-    try {
-      await cloudinary.uploader.destroy(user.avatarPublicId, {
-        resource_type: "image"
-      });
-    } catch (error) {
-      throw new apiError(400, "Failed to change the avatar..", error.message);
-    }
-  }
-
-  const avatar = await uploadImageToCloudinary(avatarFilePath);
-  if(!avatar){
-    throw new apiError(400, "Avatar not found..");
-  }
-
   const updatedFields = {};
+  
+  // Update basic fields
   if(age) updatedFields.age = age;
   if(height) updatedFields.height = height;
   if(weight) updatedFields.weight = weight;
   if(goal) updatedFields.goal = goal;
-  if(avatar.secure_url) updatedFields.avatar = avatar.secure_url;
-  if(avatar.public_id) updatedFields.avatarPublicId = avatar.public_id;
+  if(email) updatedFields.email = email;
+  if(gender) updatedFields.gender = gender;
+  
+  // Handle name update
+  if(firstName || lastName) {
+    const fullName = firstName && lastName 
+      ? `${firstName} ${lastName}`.trim()
+      : firstName || lastName || user.fullName;
+    updatedFields.fullName = fullName;
+  }
+
+  // Handle avatar upload (optional)
+  const avatarFilePath = req.file?.path;
+  if(avatarFilePath){
+    // Delete old avatar if exists
+    if(user.avatarPublicId){
+      try {
+        await cloudinary.uploader.destroy(user.avatarPublicId, {
+          resource_type: "image"
+        });
+      } catch (error) {
+        // Log error but don't fail the request
+        console.error("Failed to delete old avatar:", error.message);
+      }
+    }
+
+    // Upload new avatar
+    const avatar = await uploadImageToCloudinary(avatarFilePath);
+    if(avatar){
+      updatedFields.avatar = avatar.secure_url;
+      updatedFields.avatarPublicId = avatar.public_id;
+    }
+  }
 
   const updatedProfile = await User.findByIdAndUpdate(
     req.user._id,
     { $set: updatedFields },
     { new: true }
-  );
+  ).select("-password -refreshToken");
 
   return res.status(200).json(
     new apiResponse(200, updatedProfile, "Profile updated successfully..")
@@ -232,6 +273,7 @@ module.exports = {
   logOutUser,
   refreshAccessToken,
   changePassword,
+  getProfile,
   editProfile
 };
 

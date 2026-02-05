@@ -11,16 +11,42 @@ const BodyTempRoute = require("./src/routers/bodyTemp.route.js");
 
 const app = express();
 const port = process.env.PORT || 5000;
-app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(cors());
+
+// Core middlewares
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Allowed frontend origins (localhost & 127.0.0.1)
+const allowedOrigins = [
+  "http://localhost:5500",
+  "http://127.0.0.1:5500",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow Postman, curl, server-to-server
+      if (!origin || origin === "null") {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
+
+// Extra headers for preflight / legacy handling
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5501");
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");

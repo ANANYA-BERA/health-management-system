@@ -1,40 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign In</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-</head>
-<body>
-  <div class="Container">
-        
-    <!-- Left Side -->
-    <div class="left">
-      <h2>Welcome Back!</h2>
-      <p>Continue to track yourself....</p>
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="Container">
+      <!-- Left Side -->
+      <div class="left">
+        <h2>Welcome Back!</h2>
+        <p>Continue to track yourself....</p>
+      </div>
 
-    <!-- Right Side -->
-    <div class="right">
-      <form id="signinForm" onsubmit="login(event)">
-        <h2>Login Your Account</h2>
+      <!-- Right Side -->
+      <div class="right">
+        <div id="signinBox">
+          <h2>Login Your Account</h2>
 
-        <input id="email" type="email" placeholder="Email" required>
+          <input id="email" type="email" placeholder="Email" required />
 
-        <div class="password-field">
-          <input type="password" id="password" placeholder="Password (atleast 6 characters)" required>
-          <i class="fa-solid fa-eye" onclick="togglePassword()"></i>
+          <div class="password-field">
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              required
+            />
+            <i class="fa-solid fa-eye" onclick="togglePassword()"></i>
+          </div>
+
+          <!-- 🔥 NORMAL BUTTON ONLY -->
+          <button class="create-btn" onclick="login()">Login</button>
         </div>
-
-        <button type="submit" class="create-btn">Login</button>
-      </form>
+      </div>
     </div>
 
-  </div>
-
-  <script src="api.js"></script>
-  <script src="script.js"></script>
-</body>
+    <!-- <script src="api.js"></script> -->
+    <script src="script.js"></script>
+  </body>
 </html>

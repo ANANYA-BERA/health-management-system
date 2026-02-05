@@ -34,6 +34,11 @@ const userSchema = new Schema({
     goal: {
         type: String
     },
+    gender: {
+        type: String,
+        enum: ["Male", "Female", "Other"],
+        default: null
+    },
     refreshToken:{
         type: String,
     }

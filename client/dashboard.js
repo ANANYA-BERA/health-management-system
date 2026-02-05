@@ -33,6 +33,14 @@ document.querySelector(".card:nth-child(3) p").innerText =
 document.querySelector(".card:nth-child(4) p").innerText =
   healthData.heartRate + " bpm";
 
+// Initialize progress bar on page load
+document.addEventListener("DOMContentLoaded", () => {
+  // Wait a bit to ensure goals are loaded
+  setTimeout(() => {
+    updateProgress();
+  }, 100);
+});
+
 
 /********************************
   3️⃣ GOAL → UNIT & CARD MAPPING
@@ -165,7 +173,11 @@ function addGoal() {
   saveGoals();
   renderGoals();
   renderDynamicCards();
-  updateProgress();
+  
+  // Update progress bar after a short delay to ensure DOM is updated
+  setTimeout(() => {
+    updateProgress();
+  }, 50);
 
   goalNameSelect.selectedIndex = 0;
   goalDescInput.value = "";
@@ -260,7 +272,6 @@ function saveGoals() {
 }
 
 function loadGoals() {
-
   if (!loggedInUser) return;
 
   const saved = localStorage.getItem(`goals_${loggedInUser}`);
@@ -269,7 +280,11 @@ function loadGoals() {
 
   renderGoals();
   renderDynamicCards();
-  updateProgress();
+  
+  // Update progress bar after DOM is ready
+  setTimeout(() => {
+    updateProgress();
+  }, 50);
 }
 
 loadGoals();
@@ -280,25 +295,26 @@ loadGoals();
 *********************************/
 
 function updateProgress() {
-
   let progress = 0;
 
   const stepsGoal = goals.find(g => g.type === "stepsCount");
 
- if (stepsGoal && stepsGoal.target > 0) {
-
-  // Convert K steps → steps
-  const targetSteps = stepsGoal.target * 1000;
-
-  progress = (healthData.steps / targetSteps) * 100;
-}
-
+  if (stepsGoal && stepsGoal.target > 0) {
+    // Convert K steps → steps
+    const targetSteps = stepsGoal.target * 1000;
+    
+    if (targetSteps > 0) {
+      progress = (healthData.steps / targetSteps) * 100;
+    }
+  }
 
   progress = Math.min(Math.round(progress), 100);
 
   const barFill = document.querySelector(".bar-fill");
   const percentText = document.querySelector(".progress-percent");
 
-  barFill.style.width = progress + "%";
-  percentText.innerText = progress + "%";
+  if (barFill && percentText) {
+    barFill.style.width = progress + "%";
+    percentText.innerText = progress + "%";
+  }
 }

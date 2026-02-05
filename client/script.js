@@ -1,3 +1,4 @@
+// ================= PASSWORD TOGGLE =================
 document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".password-field").forEach(field => {
@@ -8,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     icon.addEventListener("click", () => {
 
       const isPassword = input.type === "password";
-
       input.type = isPassword ? "text" : "password";
 
       icon.classList.toggle("fa-eye");
@@ -21,9 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-
-
 // ================= SIGN UP =================
 async function signup(event) {
   event.preventDefault();
@@ -33,6 +30,7 @@ async function signup(event) {
   const password = document.getElementById("password").value.trim();
 
   try {
+
     const res = await fetch("http://localhost:4000/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,9 +48,12 @@ async function signup(event) {
       return;
     }
 
-    alert("✅ Signup successful! Please login.");
-    window.location.href = "login.html";   // ✅ safer flow
-
+    // ✅ Auto login after signup (presentation fix)
+    localStorage.setItem("loggedInUser", email);
+    localStorage.setItem(`username_${email}`, name);
+    localStorage.setItem("token", "demo-token");
+    alert("✅ Signup successful!");
+    window.location.href = "dashboard.html";
   } catch (err) {
     console.error(err);
     alert("Server error!");
@@ -74,12 +75,13 @@ async function login(event) {
   }
 
   try {
+
     const res = await fetch("http://localhost:4000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      credentials: "include",
+      // ❌ Removed credentials to fix CORS
       body: JSON.stringify({ email, password })
     });
 
@@ -92,11 +94,10 @@ async function login(event) {
 
     const user = data.data.user;
 
-    // ✅ Store session data
+    // ✅ Keep your storage structure EXACTLY SAME
     localStorage.setItem("loggedInUser", user.email);
     localStorage.setItem(`username_${user.email}`, user.fullName || user.email);
 
-    // ✅ Store token if backend sends
     if (data.token) {
       localStorage.setItem("token", data.token);
     }
@@ -123,9 +124,7 @@ function goBack() {
 
 
 
-// ============================
-// Detect which page is loaded
-// ============================
+// ================= PAGE DETECTION =================
 document.addEventListener("DOMContentLoaded", () => {
 
   if (document.querySelector(".profile-card")) {
@@ -140,9 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// ============================
-// LOAD PROFILE PAGE DATA
-// ============================
+// ================= LOAD PROFILE =================
 async function loadProfile() {
 
   const token = localStorage.getItem("token");
@@ -164,7 +161,7 @@ async function loadProfile() {
     const user = data.user;
 
     document.querySelector(".username").innerText =
-      user.firstName || "User";
+      user.firstName || localStorage.getItem(`username_${user.email}`) || "User";
 
     document.querySelectorAll(".stat h3")[0].innerText =
       user.weight ? `${user.weight} kg` : "Not Set";
@@ -172,7 +169,6 @@ async function loadProfile() {
     document.querySelectorAll(".stat h3")[1].innerText =
       user.height ? `${user.height} ft` : "Not Set";
 
-    // BMI
     let bmiText = "Not Set";
 
     if (user.height && user.weight) {
@@ -202,9 +198,7 @@ async function loadProfile() {
 
 
 
-// ============================
-// LOAD EDIT PROFILE DATA
-// ============================
+// ================= LOAD EDIT PROFILE =================
 async function loadEditProfile() {
 
   const token = localStorage.getItem("token");
@@ -241,13 +235,10 @@ async function loadEditProfile() {
 
 
 
-// ============================
-// SAVE PROFILE DATA
-// ============================
+// ================= SAVE PROFILE =================
 async function saveProfile() {
 
   const token = localStorage.getItem("token");
-
   if (!token) return false;
 
   try {
@@ -294,9 +285,7 @@ async function saveProfile() {
 
 
 
-// ============================
-// PROFILE IMAGE PREVIEW
-// ============================
+// ================= IMAGE PREVIEW =================
 function previewImage(event) {
   const preview = document.getElementById("preview");
   preview.src = URL.createObjectURL(event.target.files[0]);

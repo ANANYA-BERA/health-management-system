@@ -13,8 +13,8 @@ const verifyUser = require("../middlewares/user.middleware.js");
 router.post("/heartRate", verifyUser, addHeartRateRecords);
 router.get("/heartRate", verifyUser, getAllHeartRateRecords);
 router.get("/heartRate/:heartRateId", verifyUser, getHeartRateRecord);
-router.put("/heartRate/:heartRateId", verifyUser, updateHeartRateRecord);
-router.delete("/heartRate", verifyUser, deleteAllHeartRateRecords);
-router.delete("/heartRate/:heartRateId", verifyUser, deleteHeartRateRecord);
+router.put("/update/:heartRateId", verifyUser, updateHeartRateRecord);
+router.delete("/delete", verifyUser, deleteAllHeartRateRecords);
+router.delete("/delete/:heartRateId", verifyUser, deleteHeartRateRecord);
 
 module.exports = router;

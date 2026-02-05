@@ -7,6 +7,7 @@ const UserRouter = require("./src/routers/user.route.js");
 const StepRouter = require("./src/routers/steps.route.js");
 const HeartRateRoute = require("./src/routers/heartRate.route.js");
 const CalorieBurnedRoute = require("./src/routers/calorieBurned.route.js");
+const BodyTempRoute = require("./src/routers/bodyTemp.route.js"); 
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -41,6 +42,7 @@ app.use("/", UserRouter);
 app.use("/", StepRouter);
 app.use("/", HeartRateRoute);
 app.use("/", CalorieBurnedRoute);
+app.use("/", BodyTempRoute);
 
 connectDB()
 .then(() => {

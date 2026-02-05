@@ -1,4 +1,4 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -6,59 +6,57 @@
 }
 
 body {
-    background: #dee3f1;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-           
-        }
+    background-color: #fff;
+}
 
 
 
 /*=== Login Page ===*/
 .Container {
-            width: 750px;
-            height: 460px;
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            border-radius: 15px;
-            /* box-shadow: 0px 9px 650px rgb(65, 63, 186); */
-            overflow: hidden;
-}
-
-.left{
-    width: 50%;
-    height: 100%;
-    padding: 50px;
-    background-color: #dee3f1;
-    background-image: url(images/loginImage.jpg);
-    background-position:center;
+    width: 800px;
+    height: 490px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 15px;
+    /* box-shadow: 0px 9px 650px rgb(65, 63, 186); */
+    background-image: url(images/backgroundimage.png);
     background-size: cover;
-    border-right: #46465879 2px solid;
 }
 
-.left h2{
-    color: #3f42fa;
-    font-size: 28px;
-    font-weight:800 ;
-    margin-bottom: 5px;
-}
-
-.left p{
-    color: rgb(76, 68, 131);
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.right{
+.left {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 50%;
-    background-color: #e6eeff;
-    padding: 40px;
+    padding: 70px 50px;
+    /* background-color: #dee3f1; */
+    /* background-image: url(images/loginImage.jpg); */
+
+}
+
+.left h2 {
+    color: #ffffff;
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.left p {
+    color: rgb(213, 210, 236);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 47%;
+    padding-right: 40px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -66,105 +64,141 @@ body {
 
 
 
-.right h2{
-     margin-bottom: 2.5rem;
-            font-size: 26px;
-            font-weight: 600;
-            color: #3f42fa;
+.right h2 {
+    margin-bottom: 2.7rem;
+    font-size: 30px;
+    font-weight: 600;
+    color: #fafce2;
+}
+
+#signinForm {
+    width: 100%;
 }
 
 
-/* 
-        .btn-social {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
 
-        .btn-social button {
-            flex: 1;
-            padding: 5px 15px;
-            border: none;
-            border-radius: 9px;
-            cursor: pointer;
-            background: white;
-            font-size: 14px;
-            box-shadow: 2px 2px 9px rgb(169, 200, 235);
-        }
+/* ================= INPUT FIELD ================= */
 
-        .btn-social button:hover{
-            background-color: #3f42fa;
-            color: #fff;
-        }
+input {
+    width: 100%;
+    padding: 7px 12px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    background-color: transparent !important;
+    outline: 1.7px solid #acb3fe;
+}
 
-        .or {
-            text-align: center;
-            margin: 10px 0;
-            color: #7f7e7e;
-            font-weight: 600;
-        } */
+/* Remove background when focused */
+input:focus {
+    background-color: transparent !important;
+    outline: 1.5px solid #8690fe;
+}
 
-        input {
-            width: 100%;
-            padding: 7px 15px;
-            color: #013ee7;
-            margin-bottom:12px ;
-            border-radius: 10px;
-            border: none;
-            font-size: 14px;
-            background-color: white;
-             box-shadow: 0px 3px 2px rgb(108, 122, 179);
-             outline: none;
-        }
-        input::placeholder{
-            color: rgb(70, 71, 92);
-            font-weight: 400;
-        }
+/* Remove background when valid */
+input:valid {
+    background-color: transparent !important;
+}
+
+/* Placeholder Styling */
+input::placeholder {
+    color: rgb(208, 208, 250);
+    font-weight: 400;
+}
+
+/* ================= AUTOFILL FIX (VERY IMPORTANT) ================= */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ================= PASSWORD ICON ================= */
+
+.password-field {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.password-field i {
+    color: #dbd7fc;
+    font-size: 14px;
+    position: absolute;
+    right: 12px;
+    top: 11px;
+    cursor: pointer;
+}
+
+/* Hide default password reveal icons */
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+}
 
 
+/* ================= BUTTON ================= */
 
-        .password-field {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+.create-btn {
+    padding: 10px 25px;
+    background: #f7f4f4;
+    width: fit-content;
+    color: rgb(22, 26, 147);
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 2rem;
+}
 
-        .password-field i {
-           color: #0c0f97;
-           font-size: 14px;
-            position: absolute;
-            right: 12px;
-            top: 11px;
-            cursor: pointer;
-        }
+.create-btn:hover {
+    transform: scale(1.05);
+}
 
-        .create-btn {
-            padding: 8px 30px;
-            background: #2626fa;
-            width: fit-content;
-            color: white;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 18px;
-        }
+.login-text {
+    margin-top: 1rem;
+    text-align: center;
+    color: #f7f4f4;
+    font-size: 16px;
+}
 
-        .create-btn:hover {
-            background: #4444a8;
-        }
+.login-text a {
+    color: #f3face;
+    text-decoration: none;
+    font-weight: 600;
+}
 
-        .login-text {
-            margin-top: 15px;
-            text-align: center;
-            color: #555;
-            font-size: 16px;
-        }
+.login-btn{
+    padding: 10px 35px;
+    background: #f7f4f4;
+    color: rgb(22, 26, 147);
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 2rem;
+}
 
-        .login-text a {
-            color: #110dfe;
-            text-decoration: none;
-            font-weight: 600;
-        }
+.login-btn:hover {
+    transform: scale(1.05);
+}
+
+

@@ -1,31 +1,4 @@
-// ==================================================
-// CONFIG
-// ==================================================
-const BASE_URL = "http://localhost:4000";
-
-// ==================================================
-// TOKEN HELPERS
-// ==================================================
-function getToken() {
-  return localStorage.getItem("token");
-}
-
-function requireAuth() {
-  if (!getToken()) {
-    window.location.href = "login.html";
-    return false;
-  }
-  return true;
-}
-
-function logout() {
-  localStorage.clear();
-  window.location.href = "login.html";
-}
-
-// ==================================================
-// SIGN UP
-// ==================================================
+// ================= SIGN UP =================
 async function signup(event) {
   event.preventDefault();
 
@@ -39,7 +12,7 @@ async function signup(event) {
   }
 
   try {
-    const res = await fetch(`${BASE_URL}/register`, {
+    const res = await fetch("http://localhost:4000/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ fullName, email, password })
@@ -52,8 +25,8 @@ async function signup(event) {
       return;
     }
 
-    alert("Signup successful! Please login.");
-    window.location.href = "login.html";
+    alert("✅ Signup successful! Please login.");
+    window.location.href = "login.html";   // ✅ safer flow
 
   } catch (err) {
     console.error(err);
@@ -73,39 +46,76 @@ function login() {
     return;
   }
 
-  fetch("http://localhost:4000/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
-  })
-    .then(async res => {
-      const data = await res.json();
-      
-      // Check if response is successful and has the token
-      if (!res.ok || !data.success || !data.data?.accessToken) {
-        alert(data.message || "Login failed");
-        return;
-      }
-
-      // ✅ token is saved
-      localStorage.setItem("token", data.data.accessToken);
-
-      alert("Login successful");
-
-      // ✅ FORCE navigation (cannot be cancelled)
-      window.location.replace("dashboard.html");
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Server error");
+  try {
+    const res = await fetch("http://localhost:4000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({ email, password })
     });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Login failed!");
+      return;
+    }
+
+    const user = data.data.user;
+
+    // ✅ Store session data
+    localStorage.setItem("loggedInUser", user.email);
+    localStorage.setItem(`username_${user.email}`, user.fullName || user.email);
+
+    // ✅ Store token if backend sends
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+    }
+
+    alert("Login successful 🎉");
+    window.location.href = "dashboard.html";
+
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Server error!");
+  }
 }
 
 
 
-// ==================================================
-// LOAD PROFILE PAGE
-// ==================================================
+// ================= PROFILE REDIRECT =================
+function editProfile() {
+  window.location.href = "editprofile.html";
+}
+
+function goBack() {
+  window.history.back();
+}
+
+
+
+// ============================
+// Detect which page is loaded
+// ============================
+document.addEventListener("DOMContentLoaded", () => {
+
+  if (document.querySelector(".profile-card")) {
+    loadProfile();
+  }
+
+  if (document.querySelector(".edit-form")) {
+    loadEditProfile();
+  }
+
+});
+
+
+
+// ============================
+// LOAD PROFILE PAGE DATA
+// ============================
 async function loadProfile() {
   if (!requireAuth()) return;
 
@@ -128,7 +138,7 @@ async function loadProfile() {
     }
 
     document.querySelector(".username").innerText =
-      user.firstName || "User";
+      user.firstName || localStorage.getItem(`username_${user.email}`) || "User";
 
     document.querySelectorAll(".stat h3")[0].innerText =
       user.weight ? `${user.weight} kg` : "Not Set";
@@ -137,7 +147,8 @@ async function loadProfile() {
       user.height ? `${user.height} ft` : "Not Set";
 
     // BMI
-    let bmi = "Not Set";
+    let bmiText = "Not Set";
+
     if (user.height && user.weight) {
       const heightM = user.height * 0.3048;
       bmi = (user.weight / (heightM * heightM)).toFixed(1);
@@ -162,9 +173,9 @@ async function loadProfile() {
   }
 }
 
-// ==================================================
-// LOAD EDIT PROFILE PAGE
-// ==================================================
+// ============================
+// LOAD EDIT PROFILE DATA
+// ============================
 async function loadEditProfile() {
   if (!requireAuth()) return;
 
@@ -201,13 +212,16 @@ async function loadEditProfile() {
   }
 }
 
-// ==================================================
-// SAVE PROFILE (EDIT PROFILE SUBMIT)
-// ==================================================
-async function saveProfile(event) {
-  event.preventDefault();
+// ============================
+// SAVE PROFILE DATA
+// ============================
+async function saveProfile() {
 
-  if (!requireAuth()) return;
+  const token = localStorage.getItem("token");
+
+  if (!token) return false;
+
+  try {
 
   const fullName = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
@@ -266,9 +280,9 @@ async function saveProfile(event) {
   }
 }
 
-// ==================================================
-// IMAGE PREVIEW (FRONTEND ONLY)
-// ==================================================
+// ============================
+// PROFILE IMAGE PREVIEW
+// ============================
 function previewImage(event) {
   const preview = document.getElementById("preview");
   if (event.target.files[0]) {

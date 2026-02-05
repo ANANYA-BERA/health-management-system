@@ -22,7 +22,7 @@
           <li><a href="dashboard.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
           <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
           <li class="active"><a href="profile.html"><i class="fa-solid fa-user"></i>Profile</a></li>
-          <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+          <li><a href="register.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
         </ul>
       </div>
 
@@ -32,42 +32,56 @@
     <div class="main">
       <div class="edit-container">
         <form class="edit-form" onsubmit="return saveProfile()">
-    
+
           <div class="profile-pic-section">
             <img id="preview" src="images/userimage.jpg" alt="Profile Photo" />
-            <button  class="upload-btn">Change Photo</button>
+            <button type="button" class="upload-btn" onclick="document.getElementById('upload').click()">
+              Change Photo
+            </button>
+
             <input type="file" id="upload" accept="image/*" onchange="previewImage(event)" hidden />
           </div>
           <div class="info">
-          <label>Full Name :</label>
-          <input type="text" id="name" placeholder="your name" required />
+            <label>Full Name :</label>
+            <input type="text" id="name" placeholder="your name" required />
           </div>
           <div class="info">
-          <label>Email :</label>
-          <input type="email" id="email" placeholder="sample@gmail.com" required />
+            <label>Email :</label>
+            <input type="email" id="email" placeholder="sample@gmail.com" required />
           </div>
           <div class="info">
-          <label>Age :</label>
-          <input type="number" id="age" placeholder="your age" required />
+            <label>Age :</label>
+            <input type="number" id="age" placeholder="your age" required />
           </div>
           <div class="info">
-          <label>Height (ft) :</label>
-          <input type="text" id="height" placeholder="your height" required />
+            <label>Gender :</label>
+            <select id="gender">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div class="info">
-          <label>Weight (kg) :</label>
-          <input type="text" id="weight" placeholder="your weight" required />
+            <label>Height (ft) :</label>
+            <input type="text" id="height" placeholder="your height" required />
           </div>
           <div class="info">
-          <label>Goal :</label>
-          <textarea id="goal" rows="3" placeholder="type your goal"></textarea>
-            </div>
+            <label>Weight (kg) :</label>
+            <input type="text" id="weight" placeholder="your weight" required />
+          </div>
+          <div class="info">
+            <label>Goal :</label>
+            <textarea id="goal" rows="3" placeholder="type your goal"></textarea>
+          </div>
           <button type="submit" class="save-btn">Save Changes</button>
         </form>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="api.js"></script>
+  <script src="profile.js"></script>
 </body>
+
 </html>
